@@ -152,7 +152,7 @@ function plot(solution, mass) {
 
 function solve() {
   const solution = wasm.solve(getConfig());
-  mass = parseFloat(document.getElementById("mass").value);
+  const mass = parseFloat(document.getElementById("mass").value);
   plot(solution, mass);
 }
 
