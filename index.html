@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Solving the Boltzmann Equation</title>
+
+    <!-- Bootstrap core CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <script src="https://cdn.plot.ly/plotly-2.9.0.min.js"></script>
+  </head>
+
+  <body>
+    <noscript
+      >This page contains webassembly and javascript content, please enable
+      javascript in your browser.</noscript
+    >
+    <script src="./bootstrap.js"></script>
+
+    <!-- Page Content -->
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <h2 class="mt-5 text-left">Solving the Boltzmann Equation</h2>
+          <p class="text-left">
+            This page solve the Boltzmann equation for the dark matter comoving
+            number density. $$ \frac{dY}{dx} =
+            -\sqrt{\frac{\pi}{45}}\frac{m_{\chi}M_{pl}}{x^2}g_{*}^{1/2}\langle\sigma
+            v\rangle \left(Y^2-Y_{\mathrm{eq}}^{2}\right) $$ where: $$
+            \begin{align} Y &= n_{\chi} / s, & x &= m_{\chi} / T, &
+            \langle\sigma v\rangle &\sim \langle\sigma v\rangle_{0} x^{-n}
+            \end{align} $$
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="mass-addon3">
+                \(m_{\chi} \ [\mathrm{GeV}]\)</span
+              >
+            </div>
+            <input
+              type="text"
+              class="form-control"
+              id="mass"
+              aria-describedby="mass-addon3"
+              value="100.0"
+            />
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="sigma-addon3"
+                >\(\langle\sigma v\rangle_{0} \ [\mathrm{GeV}^{-2}]\)</span
+              >
+            </div>
+            <input
+              type="text"
+              class="form-control"
+              id="sigma"
+              aria-describedby="sigma-addon3"
+              value="1e-9"
+            />
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="n-addon3">n</span>
+            </div>
+            <input
+              type="text"
+              class="form-control"
+              id="n"
+              aria-describedby="n-addon3"
+              value="0"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="x-start-addon3"
+                >Start \(\ x = m_{\chi}/T\)</span
+              >
+            </div>
+            <input
+              type="text"
+              class="form-control"
+              id="x-start"
+              aria-describedby="x-state-addon3"
+              value="1.0"
+            />
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="x-end-addon3"
+                >End \(\ x = m_{\chi}/T\)</span
+              >
+            </div>
+            <input
+              type="text"
+              class="form-control"
+              id="x-end"
+              aria-describedby="x-end-addon3"
+              value="300"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <div class="input-group">
+            <div class="input-group-append">
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                id="btnsolve"
+              >
+                Solve
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <h2 class="mt-5 text-left">Solution</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <div id="plotlydiv">
+            <!-- Plotly chart will be drawn inside this DIV -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+
+    <footer
+      class="footer bg-dark"
+      style="height: 30px; line-height: 30px; width: 100%; margin-top: 60px"
+    >
+      <div class="container">
+        <span class="text-muted">Copyright © 2022 Logan A. Morrison</span>
+      </div>
+    </footer>
+    <!-- Footer -->
+
+    <!-- Bootstrap core JavaScript -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.0/build/styles/default.min.css"
+    />
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.0/build/highlight.min.js"></script>
+    <script>
+      hljs.initHighlightingOnLoad();
+    </script>
+  </body>
+</html>
