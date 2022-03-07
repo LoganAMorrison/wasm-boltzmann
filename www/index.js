@@ -110,7 +110,7 @@ function plot(solution, mass) {
     // console.log("x, Y = " + x + " " + y);
   }
 
-  const omegah2 = (S0 / RHOC) * mass * ys.at(-1);
+  const omegah2 = (S0 / RHOC) * mass * ys[ys.length - 1];
 
   wmin = Math.floor(Math.log10(Math.exp(wmin))) - 1;
   wmax = Math.ceil(Math.log10(Math.exp(wmax))) + 1;
