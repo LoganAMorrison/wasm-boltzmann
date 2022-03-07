@@ -13,6 +13,40 @@
     />
     <script src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     <script src="https://cdn.plot.ly/plotly-2.9.0.min.js"></script>
+
+    <style>
+      .alert {
+        padding: 20px;
+        background-color: #f44336;
+        color: white;
+        opacity: 1;
+        transition: opacity 0.6s;
+        margin-bottom: 15px;
+      }
+
+      .alert.success {
+        background-color: #04aa6d;
+      }
+      .alert.info {
+        background-color: #2196f3;
+      }
+      .alert.warning {
+        background-color: #ff9800;
+      }
+      .closebtn {
+        margin-left: 15px;
+        color: white;
+        font-weight: bold;
+        float: right;
+        font-size: 22px;
+        line-height: 20px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+      .closebtn:hover {
+        color: black;
+      }
+    </style>
   </head>
 
   <body>
@@ -28,13 +62,42 @@
         <div class="col-lg-12 text-center">
           <h2 class="mt-5 text-left">Solving the Boltzmann Equation</h2>
           <p class="text-left">
-            This page solve the Boltzmann equation for the dark matter comoving
-            number density. $$ \frac{dY}{dx} =
+            This page solves the Boltzmann equation for the dark matter comoving
+            number density and relic density. $$ \frac{dY}{dx} =
             -\sqrt{\frac{\pi}{45}}\frac{m_{\chi}M_{pl}}{x^2}g_{*}^{1/2}\langle\sigma
             v\rangle \left(Y^2-Y_{\mathrm{eq}}^{2}\right) $$ where: $$
             \begin{align} Y &= n_{\chi} / s, & x &= m_{\chi} / T, &
             \langle\sigma v\rangle &\sim \langle\sigma v\rangle_{0} x^{-n}
             \end{align} $$
+          </p>
+          <h4 class="mt-5 text-left">Glossary</h4>
+          <ul class="text-left">
+            <li>\(m_{\chi}\): Dark Matter mass</li>
+            <li>
+              \(\langle\sigma v\rangle_{0}\): Leading-order coefficient of the
+              thermally averaged annihilation cross section
+            </li>
+            <li>
+              \(n\): Leading-order power in \(x\) of the thermally averaged
+              annihilation cross section
+            </li>
+            <li>\(T\): Temperature of the Standard Model bath</li>
+            <li>
+              \(x\): Scaleless temperature (Dark Matter mass divided by Standard
+              Model temperature)
+            </li>
+            <li>
+              \(Y\): Comoving number density (number density \(n_{\chi}\)
+              divided by Standard Model entropy density \(s\))
+            </li>
+            <li>\(Y_{\mathrm{eq}}\): Equilibrium value of \(Y\)</li>
+            <li>
+              \(M_{\mathrm{pl}}\): Plank mass (taken to be \(1.220910 \times
+              10^{19}\))
+            </li>
+          </ul>
+          <p class="text-left">
+            Use the input boxes below to changes the parameter values.
           </p>
         </div>
       </div>
@@ -141,6 +204,52 @@
           <h2 class="mt-5 text-left">Solution</h2>
         </div>
       </div>
+      <div class="row">
+        <div class="col-lg-12 text-center" id="wasm-support">
+          <script>
+            const supported = (() => {
+              try {
+                if (
+                  typeof WebAssembly === "object" &&
+                  typeof WebAssembly.instantiate === "function"
+                ) {
+                  const module = new WebAssembly.Module(
+                    Uint8Array.of(0x0, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00)
+                  );
+                  if (module instanceof WebAssembly.Module)
+                    return (
+                      new WebAssembly.Instance(module) instanceof
+                      WebAssembly.Instance
+                    );
+                }
+              } catch (e) {}
+              return false;
+            })();
+
+            if (!supported) {
+              document.getElementById("wasm-support").innerHTML = `
+                <div class="alert warning">
+                  <span class="closebtn">&times;</span>  
+                  <strong>Warning!</strong> Indicates a warning that might need attention.
+                </div>`;
+            } else {
+            }
+            var close = document.getElementsByClassName("closebtn");
+            var i;
+
+            for (i = 0; i < close.length; i++) {
+              close[i].onclick = function () {
+                var div = this.parentElement;
+                div.style.opacity = "0";
+                setTimeout(function () {
+                  div.style.display = "none";
+                }, 600);
+              };
+            }
+          </script>
+        </div>
+      </div>
+
       <div class="row">
         <div class="col-lg-12 text-center">
           <div id="plotlydiv">
